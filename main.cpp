@@ -34,6 +34,9 @@ class Snake : public olc::PixelGameEngine
 		float fAccumulatedTime = 0.0f;
 		float fTimeStepLength = 0.5f;
 
+		// Highscore
+		int score = 0;
+
 	public: 
 		bool OnUserCreate() override{
 
@@ -127,6 +130,7 @@ class Snake : public olc::PixelGameEngine
 
 				// speedup the game
 				fTimeStepLength *= 0.9;
+				score += 100/fTimeStepLength;
 			}
 
 			blocks[vFoodPosition.y * nBlocksX + vFoodPosition.x] = 2;
@@ -156,6 +160,7 @@ class Snake : public olc::PixelGameEngine
 					}
 				}
 			}
+			DrawString(olc::vi2d((nBlocksX + 2) * vBlockSize.x, 2 * vBlockSize.y), std::to_string(score), olc::WHITE, 2u);
 			SetPixelMode(olc::Pixel::NORMAL); // Draw all pixels
 			return true;
 		}
