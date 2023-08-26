@@ -17,6 +17,7 @@ class Snake : public olc::PixelGameEngine
 		const int iSnakeInitPosY = nBlocksY / 2;
 
 		olc::vi2d vSnakeDir = { 1, 0 };
+		olc::vi2d vNextSnakeDir = { 1, 0 };
 
 		olc::vi2d vBlockSize = {16, 16};
 		std::unique_ptr<int[]> blocks;
@@ -29,7 +30,6 @@ class Snake : public olc::PixelGameEngine
 		olc::vi2d vFoodPosition = { 3, 8 };
 
 		bool hasColided = false;
-
 		// time accumulator to keep track of steps
 		float fAccumulatedTime = 0.0f;
 		float fTimeStepLength = 0.5f;
@@ -65,18 +65,19 @@ class Snake : public olc::PixelGameEngine
 
 			// handle user input ==> handling each frame to avoid missing any input
 			// going up or down and left is requested
-			if (GetKey(olc::Key::LEFT).bHeld && vSnakeDir.y != 0 ) { vSnakeDir.x = -1; vSnakeDir.y = 0; }
+			if (GetKey(olc::Key::LEFT).bHeld && vSnakeDir.y != 0 ) { vNextSnakeDir.x = -1; vNextSnakeDir.y = 0; }
 			// going up or down and right is requested
-			if (GetKey(olc::Key::RIGHT).bHeld && vSnakeDir.y != 0 ) { vSnakeDir.x = 1; vSnakeDir.y = 0; }
+			if (GetKey(olc::Key::RIGHT).bHeld && vSnakeDir.y != 0 ) { vNextSnakeDir.x = 1; vNextSnakeDir.y = 0; }
 			// going left or right and requesting up
-			if (GetKey(olc::Key::UP).bHeld && vSnakeDir.x != 0 ) { vSnakeDir.x = 0; vSnakeDir.y = -1; }
+			if (GetKey(olc::Key::UP).bHeld && vSnakeDir.x != 0 ) { vNextSnakeDir.x = 0; vNextSnakeDir.y = -1; }
 			// going left or right and requesting down
-			if (GetKey(olc::Key::DOWN).bHeld && vSnakeDir.x != 0 ) { vSnakeDir.x = 0; vSnakeDir.y = 1; }
+			if (GetKey(olc::Key::DOWN).bHeld && vSnakeDir.x != 0 ) { vNextSnakeDir.x = 0; vNextSnakeDir.y = 1; }
 			
 			if (fAccumulatedTime < fTimeStepLength || hasColided)
 				return true;
 			
 			fAccumulatedTime = 0;
+			vSnakeDir = vNextSnakeDir;
 			
 			// get next position of snake head
 			olc::vi2d vNextHeadPos = snake.front() + vSnakeDir;
