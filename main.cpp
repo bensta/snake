@@ -58,7 +58,7 @@ class Snake : public olc::PixelGameEngine
 			}
 
 			// load the sprite
-			sprTile = std::make_unique<olc::Sprite>("/home/benjamin/git/snake/gfx/tut_tiles.png");
+			sprTile = std::make_unique<olc::Sprite>("../gfx/tut_tiles.png");
 
 			return true;
 		}
